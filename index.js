@@ -3,14 +3,16 @@ var util = require('util');
 var fs = require('fs');
 var lineReader = require('line-reader');
 
-var kanjiDicFilePath = 'kanjidic.json';
+// download from:
+// http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz
+var kanjiDicFilePath = 'kanjidic.gz';
 
-var kanjidicJsonFile;
+var kanjidicFile;
 try {
     // Query the entry
-    kanjidicJsonFile = fs.lstatSync(kanjiDicFilePath);
+    kanjidicFile = fs.lstatSync(kanjiDicFilePath);
 	
-	if (!kanjidicJsonFile.isFile()) {
+	if (!kanjidicFile.isFile()) {
 		throw new Error("That ain't a file");
 	}
 } catch (error) {
@@ -23,32 +25,39 @@ var henshallMax = 1450;
 
 var accumulator = [];
 
-function transform(entry, eNumber) {
+function transform(entry) {
+  var fields = line.split(' ');
+  var kanji = fields[0];
+  var jisCodeHex = parseInt(fields[1], 16);
+  
+  var otherFields = fields.slice(2);
+  
+  var eNumberRegex = /E(\d+)/;
+  
+  var eIndex = _.find(otherFields, function(kanjiIndex) {
+    return kanjiIndex.match(eNumberRegex);
+  });
+  var eNumber = +eIndex.match(eNumberRegex)[1];
+  
   return {
     eNumber: eNumber,
-    kanji: entry.ki[0]
+    kanji: kanji
   };
 }
 
-var sampleAll = true; 
+var sampleAll = false; 
 
 lineReader.eachLine(kanjiDicFilePath, function(line) {
-  var parsed = JSON.parse(line);
-  console.log(Object.keys(parsed));
-  console.log(parsed.gs);
-  var kanjiIndices = parsed.gs[0].split(" ");
-  console.log(kanjiIndices);
-  var eIndex = _.find(kanjiIndices, function(kanjiIndex) {
-    return kanjiIndex.match(/E(\d+)/);
-  });
-  var eNumber = +eIndex.match(/E(\d+)/)[1];
+  var parsed = transform(line);
   
-  if (eNumber <= henshallMax) {
-    accumulator.push(transform(parsed, eNumber));
+  if (line.eNumber <= henshallMax) {
+    accumulator.push(parsed);
   }
   
   return sampleAll;
-})
+},
+/\r?\n/,
+"euc")
 .then(function () {
   console.log(accumulator);
   process.exit(0);
