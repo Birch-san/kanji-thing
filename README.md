@@ -1,19 +1,21 @@
 # Acquiring
-Download this repository
-For example `git clone git@github.com:Birch-san/kanji-thing.git` 
+Download this repository.
+
+For example `git clone git@github.com:Birch-san/kanji-thing.git`. 
 
 # Installing
-Run `npm install` in my directory
-Also [download `kanjidic.gz`](http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz) and put it into my directory
+Run `npm install` in my directory.
+
+Also [download `kanjidic.gz`](http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz) and put it into my directory.
 
 # Running
-Invoke `node index.js` in my directory
+Invoke `node index.js` in my directory.
 
 Or install [Visual Studio Code](https://code.visualstudio.com/), view index.js and press F5. This will run with a debugger attached, you can stop on breakpoints and ask questions, etc. 
 If you run with Visual Studio Code, check `Terminal.app` to see if your program's output is being directed there.
 
 # Output
-Produces a array of objects, with their Henshall index and kanji. 
+Produces a array of objects (the first 1450 Henshall kanji), with their Henshall index and kanji. 
 
 Something like this:
 ```js
