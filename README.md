@@ -9,6 +9,9 @@ Also [download `kanjidic.gz`](http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz) 
 # Running
 Invoke `node index.js` in my directory
 
+Or install [Visual Studio Code](https://code.visualstudio.com/), view index.js and press F5. This will run with a debugger attached, you can stop on breakpoints and ask questions, etc. 
+If you run with Visual Studio Code, check `Terminal.app` to see if your program's output is being directed there.
+
 # Output
 Produces a array of objects, with their Henshall index and kanji. 
 
