@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "iconv-lite": "^0.4.11",
     "line-reader": "^0.2.4",
     "lodash": "^3.10.1"
   }

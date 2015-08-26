@@ -2,6 +2,8 @@ var _ = require('lodash');
 var util = require('util');
 var fs = require('fs');
 var lineReader = require('line-reader');
+var iconv = require('iconv-lite');
+iconv.extendNodeEncodings();
 
 // download from:
 // http://ftp.monash.edu.au/pub/nihongo/kanjidic.gz
@@ -26,7 +28,7 @@ var henshallMax = 1450;
 var accumulator = [];
 
 function transform(entry) {
-  var fields = line.split(' ');
+  var fields = entry.split(' ');
   var kanji = fields[0];
   var jisCodeHex = parseInt(fields[1], 16);
   
@@ -37,6 +39,10 @@ function transform(entry) {
   var eIndex = _.find(otherFields, function(kanjiIndex) {
     return kanjiIndex.match(eNumberRegex);
   });
+  // no eIndex? no use
+  if (eIndex === undefined) {
+    return undefined;
+  }
   var eNumber = +eIndex.match(eNumberRegex)[1];
   
   return {
@@ -45,19 +51,32 @@ function transform(entry) {
   };
 }
 
-var sampleAll = false; 
+var sampleAll = true;
+var skippedFirstLine = false; 
 
 lineReader.eachLine(kanjiDicFilePath, function(line) {
-  var parsed = transform(line);
+  // that darned header
+  if (!skippedFirstLine) {
+    skippedFirstLine = true;
+    // skip to next
+    return true;
+  }
   
-  if (line.eNumber <= henshallMax) {
+  var parsed = transform(line);
+  // could not be parsed?
+  if (parsed === undefined) {
+    // skip to next
+    return true;
+  }
+  
+  if (parsed.eNumber <= henshallMax) {
     accumulator.push(parsed);
   }
   
   return sampleAll;
 },
-/\r?\n/,
-"euc")
+"\n",
+"eucjp")
 .then(function () {
   console.log(accumulator);
   process.exit(0);
