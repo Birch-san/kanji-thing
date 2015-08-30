@@ -19,6 +19,10 @@ lineReader.eachLine(linesFilePath, function(line) {
 	return true;
 })
 .then(function () {
-  console.log(accumulator);
+  // console.log(accumulator);
+  var accumulator2 = "";
+  console.log(_.reduce(accumulator, function(accumulator2, iterand) {
+  	return accumulator2+"\n"+iterand.join(",");
+  }), accumulator2);
   process.exit(0);
 });
