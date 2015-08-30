@@ -17,9 +17,7 @@ lineReader.eachLine(linesFilePath, function(line) {
 	accumulator.push(arrayOfPages);
 
 	return true;
-},
-"\n",
-"eucjp")
+})
 .then(function () {
   console.log(accumulator);
   process.exit(0);
