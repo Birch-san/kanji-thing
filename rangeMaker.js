@@ -21,8 +21,14 @@ lineReader.eachLine(linesFilePath, function(line) {
 .then(function () {
   // console.log(accumulator);
   var accumulator2 = "";
-  console.log(_.reduce(accumulator, function(accumulator2, iterand) {
-  	return accumulator2+"\n"+iterand.join(",");
-  }), accumulator2);
+  // console.log(_.reduce(accumulator, function(accumulator2, iterand) {
+  // 	return accumulator2+"\n"+iterand.join(",");
+  // }), accumulator2);
+
+	var firstPage = 1;
+
+	console.log(_.map(accumulator, function(iterand, index) {
+		return Array(iterand.length).join(index+firstPage)
+	}).join("\n"));
   process.exit(0);
 });
