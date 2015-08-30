@@ -28,7 +28,7 @@ lineReader.eachLine(linesFilePath, function(line) {
 	var firstPage = 1;
 
 	console.log(_.map(accumulator, function(iterand, index) {
-		return Array(iterand.length).join(index+firstPage)
-	}).join("\n"));
+		return Array(iterand.length).join(index+firstPage+"\n")
+	}).join(""));
   process.exit(0);
 });
